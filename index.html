@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabela de Dados</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tabela de Dados</h1>
+    <table id="data-table">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Nome</th>
+                <th>Preço</th>
+                <th>Quantidade</th>
+                <th>Desconto (%)</th>
+                <th>Valor Unitário Máximo Aceitável</th>
+                <th>Valor Total Máximo Aceitável</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Os dados da tabela serão inseridos aqui -->
+        </tbody>
+    </table>
+    <script>
+        async function loadData() {
+            try {
+                const response = await fetch('saida.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                console.log(data);  // Verifique os dados no console
+
+                const tbody = document.querySelector('#data-table tbody');
+
+                data.forEach(item => {
+                    const row = document.createElement('tr');
+
+                    for (const key in item) {
+                        const cell = document.createElement('td');
+                        cell.textContent = item[key];
+                        row.appendChild(cell);
+                    }
+
+                    tbody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Erro ao carregar os dados:', error);
+            }
+        }
+
+        // Carrega os dados quando a página é carregada
+        window.onload = loadData;
+    </script>
+</body>
+</html>
